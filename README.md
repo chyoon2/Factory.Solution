@@ -48,8 +48,8 @@ _Keep track of your Engineers and Machines with a click of a button. Save time w
 4. This program's database name is set to lowercase 'chris_yoon'
 
 ##### Configure Migration:
-1. In your terminal run 'migration et ef Initial'
-2. Then run 'migration et ef update'
+1. In your terminal run 'dotnet ef migrations add Initial'
+2. Then run 'dotnet ef database update'
 3. Refresh your Sql workbench to check for the 'chris_yoon' schema. You may have named it differently.
 
 ## Known Bugs
@@ -75,6 +75,6 @@ Reach out to chy.yoon@gmail.com for support.
 
 ### License
 
-Copyright (c) 2020 ** Chris Yoon_**
+Copyright (c) 2020 ** _Chris Yoon_**
 
 This software is licensed under the MIT license.
