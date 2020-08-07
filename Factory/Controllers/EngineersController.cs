@@ -23,17 +23,17 @@ namespace Factory.Controllers
 
     public ActionResult Create()
     {
-      ViewBag.MachineId = new SelectList() (_db.Machines, "MachineId", "MachineName");
+      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "MachineName");
       return View();
     }
 
     [HttpPost]
-    public ActionResult Create(Engineer engineer, int machineId)
+    public ActionResult Create(Engineer engineer, int MachineId)
     {
       _db.Engineers.Add(engineer);
-      if (machineId !=0)
+      if (MachineId !=0)
       {
-        _db.MachineEngineer.Add(new MachineEngineer() {MachineId = MachineId, EngineerId = engineer.EngineerId});
+        _db.MachineEngineer.Add(new MachineEngineer() { MachineId = MachineId, EngineerId = engineer.EngineerId});
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -47,13 +47,13 @@ namespace Factory.Controllers
     }
 
     [HttpPost]
-    public ActionResult Edit(Engineer engineer, int machineId)
+    public ActionResult Edit(Engineer engineer, int MachineId)
     {
       if(MachineId !=0)
       {
         _db.MachineEngineer.Add(new MachineEngineer() {MachineId = MachineId, EngineerId = engineer.EngineerId});
       }
-      db.Entry(engineer).State = EntityState.Modified;
+      _db.Entry(engineer).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
@@ -76,7 +76,7 @@ namespace Factory.Controllers
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int Id)
     {
-      var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
+      var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == Id);
       _db.Engineers.Remove(thisEngineer);
       _db.SaveChanges();
       return RedirectToAction("Index");

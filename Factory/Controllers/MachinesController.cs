@@ -9,7 +9,7 @@ namespace Factory.Controllers
 {
   public class MachinesController : Controller
   {
-    private readonly FactorytContext _db;
+    private readonly FactoryContext _db;
 
     public MachinesController(FactoryContext db)
     {
@@ -31,7 +31,7 @@ namespace Factory.Controllers
     public ActionResult Create(Machine machine, int EngineerId)
     {
       _db.Add(machine);
-      if (Engineer !=0)
+      if (EngineerId !=0)
       {
         _db.MachineEngineer.Add(new MachineEngineer() { EngineerId = EngineerId, MachineId = machine.MachineId});
       }
@@ -43,7 +43,7 @@ namespace Factory.Controllers
     {
       var thisMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
       ViewBag.EngineerId = new SelectList(_db.Engineers, "EngineerId", "EngineerName");
-      return View(thisEngineer);
+      return View(thisMachine);
     } 
 
     [HttpPost]
@@ -85,9 +85,9 @@ namespace Factory.Controllers
     [HttpPost]
     public ActionResult DeleteEngineer(int joinId)
     {
-      var joinEntry = _db.MachineEngineer(FirstOrDefault(entry => entry.MachineEngineerId == joinId));
+      var joinEntry = _db.MachineEngineer.FirstOrDefault(entry => entry.MachineEngineerId == joinId);
       _db.MachineEngineer.Remove(joinEntry);
-      db.SaveChanges();
+      _db.SaveChanges();
       return RedirectToAction("Show");
     }
   }
