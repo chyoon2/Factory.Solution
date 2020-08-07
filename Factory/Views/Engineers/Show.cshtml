@@ -15,13 +15,19 @@
 else
 {
   <h4> Machines the Engineer is Qualified to operate:</h4>
-  <ul>
-  @foreach(var join in Model.Machines)
-  {
-    <li>@join.Machine.MachineName</li>
-  }
-  </ul>
 }
+
+<ul>
+@foreach(var join in Model.Machines)
+{
+  <li>@join.Machine.MachineName</li>
+  @using (Html.BeginForm("DeleteMachine", "Engineers"))
+  {
+    @Html.Hidden("joinId", @join.MachineEngineerId)
+    <input type="submit" value="Delete" class= "btn btn-warning"/>
+  } 
+}
+</ul>
 
 <p>@Html.ActionLink("Back to Engineers", "Index")</p>
 <p>@Html.ActionLink("Edit Engineer", "Edit", new { id = Model.EngineerId })</p>
