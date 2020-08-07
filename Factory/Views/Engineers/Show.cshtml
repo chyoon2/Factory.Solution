@@ -1,0 +1,29 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Factory.Models.Engineer;
+
+<h1>Engineer Details</h1>
+<hr />
+<h2>@Html.DisplayNameFor(model => model.EngineerName): @Html.DisplayFor(model => model.EngineerName)</h2>
+
+@if(@Model.Machines.Count == 0)
+{
+  <p>This category does not contain any Machines</p>
+}
+else
+{
+  <h4> Machines the Engineer is Qualified to operate:</h4>
+  <ul>
+  @foreach(var join in Model.Machines)
+  {
+    <li>@join.Machine.MachineName</li>
+  }
+  </ul>
+}
+
+<p>@Html.ActionLink("Back to Engineers", "Index")</p>
+<p>@Html.ActionLink("Edit Engineer", "Edit", new { id = Model.EngineerId })</p>
+<p>@Html.ActionLink("Delete Engineer", "Delete", new { id = Model.EngineerId })</p>
+
