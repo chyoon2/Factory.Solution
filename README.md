@@ -72,7 +72,7 @@ Reach out to chy.yoon@gmail.com for support.
 * .NET Core
 
 ## Resources:
-
+* Image used: ![Image of dr.suess machine]("https://i.pinimg.com/originals/54/e6/4b/54e64be199df9746546d2b94d3ee54d4.jpg")
 ### License
 
 Copyright (c) 2020 ** _Chris Yoon_**
