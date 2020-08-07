@@ -1,0 +1,83 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Factory.Models;
+using System.Linq;
+
+namespace Factory.Controllers
+{
+  public class MachinesController : Controller
+  {
+    private readonly FactorytContext _db;
+
+    public MachinesController(FactoryContext db)
+    {
+      _db = db;
+    }
+
+    public ActionResult Index()
+    {
+      return View(_db.Machines.ToList());
+    }
+    
+    public ActionResult Edit(int id)
+    {
+      var thisMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
+      ViewBag.EngineerId = new SelectList(_db.Engineers, "EngineerId", "EngineerName");
+      return View(thisEngineer);
+    } 
+
+    [HttpPost]
+    public ActionResult Edit(Machine machine, int EngineerId)
+    {
+      if(EngineerId !=0)
+      {
+        _db.MachineEngineer.Add(new MachineEngineer() {EngineerId = EngineerId, MachineId = machine.MachineId});
+      }
+      _db.Entry(item).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    public ActionResult Create()
+    {
+      ViewBag.EngineerId = new SelectList(_db.Engineers, "EngineerId", "EngineerName");
+      return View();
+    }
+    [HttpPost]
+    public ActionResult Create(Machine machine, int EngineerId)
+    {
+      _db.Add(machine);
+      if (Engineer !=0)
+      {
+        _db.MachineEngineer.Add(new MachineEngineer() { EngineerId = EngineerId, MachineId = machine.MachineId});
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+     public ActionResult Show(int id)
+    {
+      var thisMachine= _db.Machines
+        .Include(machine => machine.Engineers)
+        .ThenInclude(join => join.Engineer)
+        .FirstOrDefault(Machine => Machine.MachineId == id);
+      return View(thisMachine);
+    }
+
+    public ActionResult Delete(int id)
+    {
+      var thisMachine = _db.Machines.FirstOrDefault(machines => machines.MachineId == id);
+      return View(thisMachine);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      var thisMachine = _db.Machines.FirstOrDefault(Machines => Machines.MachineId == id);
+      _db.Machines.Remove(thisMachine);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+  }
+}

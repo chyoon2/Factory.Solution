@@ -32,7 +32,7 @@ namespace Factory.Controllers
       return RedirectToAction("Index");
     }
 
-    public ActionResult Details(int id)
+    public ActionResult Show(int id)
     {
       var thisEngineer = _db.Engineers
         .Include(engineer => engineer.Machines)
@@ -58,14 +58,15 @@ namespace Factory.Controllers
       var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);  
       return View(thisEngineer);
     }
-    [HttpPost ActionName("Delete")]
+    [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int Id)
     {
       var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
       _db.Engineers.Remove(thisEngineer);
       _db.SaveChanges();
       return RedirectToAction("Index");
-
     }
+  }
+}
 
 
