@@ -21,6 +21,24 @@ namespace Factory.Controllers
       return View(_db.Machines.ToList());
     }
     
+    public ActionResult Create()
+    {
+      ViewBag.EngineerId = new SelectList(_db.Engineers, "EngineerId", "EngineerName");
+      return View();
+    }
+
+    [HttpPost]
+    public ActionResult Create(Machine machine, int EngineerId)
+    {
+      _db.Add(machine);
+      if (Engineer !=0)
+      {
+        _db.MachineEngineer.Add(new MachineEngineer() { EngineerId = EngineerId, MachineId = machine.MachineId});
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
     public ActionResult Edit(int id)
     {
       var thisMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
@@ -35,28 +53,12 @@ namespace Factory.Controllers
       {
         _db.MachineEngineer.Add(new MachineEngineer() {EngineerId = EngineerId, MachineId = machine.MachineId});
       }
-      _db.Entry(item).State = EntityState.Modified;
+      _db.Entry(machine).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
-    public ActionResult Create()
-    {
-      ViewBag.EngineerId = new SelectList(_db.Engineers, "EngineerId", "EngineerName");
-      return View();
-    }
-    [HttpPost]
-    public ActionResult Create(Machine machine, int EngineerId)
-    {
-      _db.Add(machine);
-      if (Engineer !=0)
-      {
-        _db.MachineEngineer.Add(new MachineEngineer() { EngineerId = EngineerId, MachineId = machine.MachineId});
-      }
-      _db.SaveChanges();
-      return RedirectToAction("Index");
-    }
-     public ActionResult Show(int id)
+    public ActionResult Show(int id)
     {
       var thisMachine= _db.Machines
         .Include(machine => machine.Engineers)
@@ -78,6 +80,15 @@ namespace Factory.Controllers
       _db.Machines.Remove(thisMachine);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult DeleteEngineer(int joinId)
+    {
+      var joinEntry = _db.MachineEngineer(FirstOrDefault(entry => entry.MachineEngineerId == joinId));
+      _db.MachineEngineer.Remove(joinEntry);
+      db.SaveChanges();
+      return RedirectToAction("Show");
     }
   }
 }
